@@ -14,8 +14,10 @@ class WatchlistItemController extends Controller
      */
     public function index(Request $request)
     {
+        // Toon alleen items van de ingelogde gebruiker.
         $query = WatchlistItem::where('user_id', Auth::id());
 
+        // Eenvoudige filters op status en type.
         if ($request->filled('status') && in_array($request->status, ['niet_bekeken', 'bekeken'], true)) {
             $query->where('status', $request->status);
         }
@@ -42,6 +44,7 @@ class WatchlistItemController extends Controller
      */
     public function store(Request $request)
     {
+        // Valideer formulierdata van de toevoegpagina.
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:film,serie',
@@ -49,6 +52,7 @@ class WatchlistItemController extends Controller
             'image' => 'nullable|image|max:4096',
         ]);
 
+        // Upload afbeelding (optioneel) en bewaar de publieke URL.
         $imageUrl = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('watchlist-images', 'public');
@@ -81,6 +85,7 @@ class WatchlistItemController extends Controller
      */
     public function edit(WatchlistItem $watchlistItem)
     {
+        // Beveiliging: gebruiker mag alleen eigen item bewerken.
         if ($watchlistItem->user_id !== Auth::id()) {
             abort(403);
         }
@@ -93,6 +98,7 @@ class WatchlistItemController extends Controller
      */
     public function update(Request $request, WatchlistItem $watchlistItem)
     {
+        // Beveiliging: gebruiker mag alleen eigen item updaten.
         if ($watchlistItem->user_id !== Auth::id()) {
             abort(403);
         }
@@ -106,6 +112,7 @@ class WatchlistItemController extends Controller
         ]);
 
         if ($validated['status'] === 'niet_bekeken') {
+            // Rating hoort leeg te zijn wanneer item niet bekeken is.
             $validated['rating'] = null;
         }
 
@@ -119,6 +126,7 @@ class WatchlistItemController extends Controller
      */
     public function destroy(WatchlistItem $watchlistItem)
     {
+        // Beveiliging: gebruiker mag alleen eigen item verwijderen.
         if ($watchlistItem->user_id !== Auth::id()) {
             abort(403);
         }

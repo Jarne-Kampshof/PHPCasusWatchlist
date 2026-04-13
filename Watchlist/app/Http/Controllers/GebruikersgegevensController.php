@@ -12,6 +12,7 @@ class GebruikersgegevensController extends Controller
 {
     public function register(Request $request)
     {
+        // Valideer de registratie-invoer.
         $validated = $request->validate([
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
@@ -20,12 +21,14 @@ class GebruikersgegevensController extends Controller
             'telefoonnummer' => 'nullable|string',
         ]);
 
+        // Maak het hoofdaccount aan in de users tabel.
         $user = User::create([
             'name' => $validated['voornaam'] . ' ' . $validated['achternaam'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
+        // Sla extra profielinformatie op in gebruikersgegevens.
         gebruikersgegevens::create([
             'user_id' => $user->id,
             'voornaam' => $validated['voornaam'],
@@ -40,6 +43,7 @@ class GebruikersgegevensController extends Controller
 
     public function login(Request $request)
     {
+        // Controleer of email en wachtwoord aanwezig zijn.
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
@@ -51,6 +55,7 @@ class GebruikersgegevensController extends Controller
             ])->onlyInput('email');
         }
 
+        // Vernieuw de sessie na succesvolle login.
         $request->session()->regenerate();
 
         return to_route('watchlist.index');
@@ -58,6 +63,7 @@ class GebruikersgegevensController extends Controller
 
     public function logout(Request $request)
     {
+        // Log uit en maak de sessie ongeldig.
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -70,6 +76,7 @@ class GebruikersgegevensController extends Controller
      */
     public function index()
     {
+        // Toon alleen profieldata van de ingelogde gebruiker.
         $user_id = Auth::id();
         $gebruikersgegevens = gebruikersgegevens::where('user_id', $user_id)
             ->orderBy('updated_at', 'desc')
@@ -116,6 +123,7 @@ class GebruikersgegevensController extends Controller
      */
     public function show(gebruikersgegevens $gebruikersgegevens)
     {
+        // Blokkeer toegang tot gegevens van andere gebruikers.
         if ($gebruikersgegevens->user_id !== Auth::id()) {
             abort(403);
         }
@@ -128,6 +136,7 @@ class GebruikersgegevensController extends Controller
      */
     public function edit(gebruikersgegevens $gebruikersgegevens)
     {
+        // Blokkeer toegang tot gegevens van andere gebruikers.
         if ($gebruikersgegevens->user_id !== Auth::id()) {
             abort(403);
         }
@@ -140,6 +149,7 @@ class GebruikersgegevensController extends Controller
      */
     public function update(Request $request, gebruikersgegevens $gebruikersgegevens)
     {
+        // Blokkeer toegang tot gegevens van andere gebruikers.
         if ($gebruikersgegevens->user_id !== Auth::id()) {
             abort(403);
         }
@@ -158,6 +168,7 @@ class GebruikersgegevensController extends Controller
         $gebruikersgegevens->telefoonnummer = $request->telefoonnummer;
 
         if ($request->filled('wachtwoord')) {
+            // Hash wachtwoord opnieuw als gebruiker dit wijzigt.
             $gebruikersgegevens->wachtwoord = Hash::make($request->wachtwoord);
         }
 
@@ -171,6 +182,7 @@ class GebruikersgegevensController extends Controller
      */
     public function destroy(gebruikersgegevens $gebruikersgegevens)
     {
+        // Blokkeer toegang tot gegevens van andere gebruikers.
         if ($gebruikersgegevens->user_id !== Auth::id()) {
             abort(403);
         }
