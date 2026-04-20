@@ -17,6 +17,9 @@ class WatchlistItemController extends Controller
         // Toon alleen items van de ingelogde gebruiker.
         $query = WatchlistItem::where('user_id', Auth::id());
 
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
         // Eenvoudige filters op status en type.
         if ($request->filled('status') && in_array($request->status, ['niet_bekeken', 'bekeken'], true)) {
             $query->where('status', $request->status);
