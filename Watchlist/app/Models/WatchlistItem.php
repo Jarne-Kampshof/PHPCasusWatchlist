@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $year
  * @property int|null $rating
  * @property string|null $image_path
+ * @property int|null $tmdb_id
+ * @property string|null $tmdb_type
  */
 class WatchlistItem extends Model
 {
@@ -24,5 +26,7 @@ class WatchlistItem extends Model
         'year',
         'rating',
         'image_path',
+        'tmdb_id',
+        'tmdb_type',
     ];
 }
