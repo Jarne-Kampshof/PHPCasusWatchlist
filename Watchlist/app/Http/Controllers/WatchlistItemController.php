@@ -44,6 +44,13 @@ class WatchlistItemController extends Controller
         $searchQuery = trim((string) $request->query('query', ''));
         $searchResults = [];
         $searchError = null;
+        $watchlistItems = WatchlistItem::where('user_id', Auth::id())
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        $existingItems = WatchlistItem::where('user_id', Auth::id())
+            ->whereNotNull('tmdb_id')
+            ->get()
+            ->keyBy('tmdb_id');
 
         if ($searchQuery !== '') {
             try {
@@ -65,6 +72,8 @@ class WatchlistItemController extends Controller
             'query' => $searchQuery,
             'searchResults' => $searchResults,
             'searchError' => $searchError,
+            'watchlistItems' => $watchlistItems,
+            'existingItems' => $existingItems,
         ]);
     }
 

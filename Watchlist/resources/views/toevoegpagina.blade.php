@@ -126,13 +126,13 @@
         <div class="notice error">{{ $searchError }}</div>
     @endif
 
-    @if ($query !== '' && ! $searchError)
+    @if ($query !== '' && !$searchError)
         <div class="notice info">
             Resultaten voor "{{ $query }}". Kies een item om het direct aan je watchlist toe te voegen.
         </div>
     @endif
 
-    @if (! empty($searchResults))
+    @if (!empty($searchResults))
         <div class="results">
             @foreach ($searchResults as $result)
                 <article class="result">
@@ -184,5 +184,13 @@
             </div>
             <button type="submit">Toevoegen aan watchlist</button>
         </form>
+
+        @role('admin')
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <a href="{{ route('watchlist.index') }}" style="display: inline-block; background: #dbeafe; border: 1px solid #93c5fd; padding: 8px 16px; border-radius: 6px; text-decoration: none; color: #1e40af; font-weight: 600;">
+                Beheer watchlist
+            </a>
+        </div>
+        @endrole
     </div>
 </div>

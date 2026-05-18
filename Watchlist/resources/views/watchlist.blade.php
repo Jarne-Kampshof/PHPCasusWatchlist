@@ -43,6 +43,24 @@
         border-color: #93c5fd;
     }
 
+    .admin-callout {
+        margin: 0 0 14px;
+        padding: 14px 16px;
+        border: 1px solid #bfdbfe;
+        border-radius: 10px;
+        background: #eff6ff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .admin-callout strong {
+        display: block;
+        margin-bottom: 4px;
+    }
+
     input[type="text"] {
         border: 1px solid #cbd5e1;
         border-radius: 6px;
@@ -77,13 +95,25 @@
         </form>
     </div>
 
+    @if (auth()->user()?->hasRole('admin'))
+        <div class="admin-callout">
+            <div>
+                <strong>Admin acties</strong>
+                <span>Ga direct naar de toevoegpagina of beheer items.</span>
+            </div>
+            <a class="btn primary" href="{{ route('watchlist.create') }}">Naar toevoegpagina</a>
+        </div>
+    @endif
+
     <form action="" class="topbar">
         <input type="text" name="search" placeholder="Zoeken...">
         <button class="btn" type="submit">Zoek</button>
     </form>
 
     <div class="topbar">
-        <a class="btn primary" href="{{ route('watchlist.create') }}">Toevoegen</a>
+        @if (auth()->user()?->hasRole('admin'))
+            <a class="btn primary" href="{{ route('watchlist.create') }}">Toevoegen</a>
+        @endif
 
         <a class="btn" href="{{ route('watchlist.index') }}">Alles</a>
         <a class="btn" href="{{ route('watchlist.index', ['type' => 'film']) }}">Films</a>

@@ -58,6 +58,12 @@ class GebruikersgegevensController extends Controller
         // Vernieuw de sessie na succesvolle login.
         $request->session()->regenerate();
 
+        $user = Auth::user();
+
+        if ($user instanceof User && $user->hasRole('admin')) {
+            return to_route('admin');
+        }
+
         return to_route('watchlist.index');
     }
 
