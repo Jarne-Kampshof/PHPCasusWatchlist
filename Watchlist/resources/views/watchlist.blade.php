@@ -95,15 +95,15 @@
         </form>
     </div>
 
-    @if (auth()->user()?->hasRole('admin'))
+    @auth
         <div class="admin-callout">
             <div>
-                <strong>Admin acties</strong>
-                <span>Ga direct naar de toevoegpagina of beheer items.</span>
+                <strong>Toevoegen aan je watchlist</strong>
+                <span>Ga direct naar de toevoegpagina om een film of serie toe te voegen.</span>
             </div>
             <a class="btn primary" href="{{ route('watchlist.create') }}">Naar toevoegpagina</a>
         </div>
-    @endif
+    @endauth
 
     <form action="" class="topbar">
         <input type="text" name="search" placeholder="Zoeken...">
@@ -111,10 +111,9 @@
     </form>
 
     <div class="topbar">
-        @if (auth()->user()?->hasRole('admin'))
+        @auth
             <a class="btn primary" href="{{ route('watchlist.create') }}">Toevoegen</a>
-        @endif
-
+        @endauth
         <a class="btn" href="{{ route('watchlist.index') }}">Alles</a>
         <a class="btn" href="{{ route('watchlist.index', ['type' => 'film']) }}">Films</a>
         <a class="btn" href="{{ route('watchlist.index', ['type' => 'serie']) }}">Series</a>

@@ -37,6 +37,13 @@
         border-color: #93c5fd;
         cursor: pointer;
     }
+
+    input[readonly],
+    select[disabled] {
+        background: #f8fafc;
+        color: #475569;
+        cursor: not-allowed;
+    }
 </style>
 
 <div class="card">
@@ -46,14 +53,15 @@
         @method('PUT')
         <div class="field">
             <label for="title">Titel:</label>
-            <input type="text" id="title" name="title" value="{{ $watchlistItem->title }}" required>
+            <input type="text" id="title" name="title" value="{{ $watchlistItem->title }}" required readonly>
         </div>
         <div class="field">
             <label for="type">Type:</label>
-            <select id="type" name="type" required>
+            <select id="type" name="type" required disabled>
                 <option value="film" {{ $watchlistItem->type === 'film' ? 'selected' : '' }}>Film</option>
                 <option value="serie" {{ $watchlistItem->type === 'serie' ? 'selected' : '' }}>Serie</option>
             </select>
+            <input type="hidden" name="type" value="{{ $watchlistItem->type }}">
         </div>
         <div></div>
         <div class="field">
@@ -67,7 +75,7 @@
         <div class="field">
             <label for="year">Jaar:</label>
             <input type="number" id="year" name="year" value="{{ $watchlistItem->year }}" required min="1900"
-                max="{{ date('Y') }}">
+                max="{{ date('Y') }}" readonly>
         </div>
         <div class="field">
             <label for="rating">Rating:</label>
