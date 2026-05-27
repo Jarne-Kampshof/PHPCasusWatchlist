@@ -173,10 +173,7 @@
                     <div class="label">Met watchlist items</div>
                     <div class="value">{{ $users->where('watchlist_items_count', '>', 0)->count() }}</div>
                 </div>
-                <div class="stat">
-                    <div class="label">Met profielrecords</div>
-                    <div class="value">{{ $users->where('profile_records_count', '>', 0)->count() }}</div>
-                </div>
+
             </div>
         </section>
 
@@ -195,8 +192,7 @@
                             <th>E-mail</th>
                             <th>Rollen</th>
                             <th>Watchlist</th>
-                            <th>Profielrecords</th>
-                            <th>Actie</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -215,7 +211,6 @@
                                     @endforelse
                                 </td>
                                 <td>{{ $user->watchlist_items_count }}</td>
-                                <td>{{ $user->profile_records_count }}</td>
                                 <td>
                                     <a class="link" href="{{ route('admin.show', $user) }}">Bekijk detail</a>
                                 </td>

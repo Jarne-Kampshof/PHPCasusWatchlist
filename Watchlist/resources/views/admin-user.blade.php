@@ -182,47 +182,10 @@
                     <div class="value">{{ $user->watchlist_items_count }}</div>
                 </div>
                 <div class="info">
-                    <div class="label">Profielrecords</div>
-                    <div class="value">{{ $user->profile_records_count }}</div>
-                </div>
-                <div class="info">
                     <div class="label">Aangemaakt</div>
                     <div class="value">{{ $user->created_at?->format('d-m-Y H:i') ?? 'Onbekend' }}</div>
                 </div>
             </div>
-        </section>
-
-        <section class="card">
-            <div class="card-header">
-                <h2>Profielgegevens</h2>
-            </div>
-
-            @if ($user->profileRecords->isEmpty())
-                <div class="empty">Er zijn geen profielrecords gevonden voor deze gebruiker.</div>
-            @else
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Voornaam</th>
-                            <th>Achternaam</th>
-                            <th>E-mail</th>
-                            <th>Telefoonnummer</th>
-                            <th>Laatste update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($user->profileRecords as $record)
-                            <tr>
-                                <td>{{ $record->voornaam }}</td>
-                                <td>{{ $record->achternaam }}</td>
-                                <td>{{ $record->email }}</td>
-                                <td>{{ $record->telefoonnummer ?? 'Niet ingevuld' }}</td>
-                                <td>{{ $record->updated_at?->format('d-m-Y H:i') ?? 'Onbekend' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
         </section>
 
         <section class="card">

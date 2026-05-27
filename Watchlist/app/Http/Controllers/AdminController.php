@@ -10,10 +10,9 @@ class AdminController extends Controller
     {
         $users = User::query()
             ->with([
-                'profileRecords' => fn ($query) => $query->latest(),
                 'watchlistItems' => fn ($query) => $query->latest(),
             ])
-            ->withCount(['profileRecords', 'watchlistItems'])
+            ->withCount(['watchlistItems'])
             ->latest()
             ->get();
 
@@ -23,9 +22,8 @@ class AdminController extends Controller
     public function show(User $user)
     {
         $user->load([
-            'profileRecords' => fn ($query) => $query->latest(),
             'watchlistItems' => fn ($query) => $query->latest(),
-        ])->loadCount(['profileRecords', 'watchlistItems']);
+        ])->loadCount(['watchlistItems']);
 
         return view('admin-user', compact('user'));
     }

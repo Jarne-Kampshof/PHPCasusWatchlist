@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\gebruikersgegevens;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -27,6 +28,10 @@ class GebruikersgegevensController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
+
+        // Zorg dat de standaardrol bestaat en wijs 'user' toe aan de nieuw aangemaakte account.
+        Role::firstOrCreate(['name' => 'user']);
+        $user->assignRole('user');
 
         // Sla extra profielinformatie op in gebruikersgegevens.
         gebruikersgegevens::create([

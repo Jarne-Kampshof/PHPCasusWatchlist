@@ -185,6 +185,7 @@
             <button type="submit">Toevoegen aan watchlist</button>
         </form>
 
+    
 
     </div>
 </div>

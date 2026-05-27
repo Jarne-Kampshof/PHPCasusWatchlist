@@ -49,11 +49,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function profileRecords(): HasMany
-    {
-        return $this->hasMany(gebruikersgegevens::class, 'user_id');
-    }
-
     public function watchlistItems(): HasMany
     {
         return $this->hasMany(WatchlistItem::class, 'user_id');
