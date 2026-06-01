@@ -29,6 +29,20 @@
         margin-bottom: 12px;
     }
 
+    .watchlist-switcher {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 14px 0 16px;
+    }
+
+    .watchlist-name {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin: 4px 0 0;
+    }
+
     .btn {
         border: 1px solid #9ca3af;
         background: #f9fafb;
@@ -88,7 +102,10 @@
 
 <div class="page">
     <div class="header">
-        <h1>Watchlist</h1>
+        <div>
+            <h1>Watchlist</h1>
+            <div class="watchlist-name">Huidige lijst: {{ $selectedWatchlist->name }}</div>
+        </div>
         <form method="POST" action="{{ route('logout') }}" style="display:inline;">
             @csrf
             <button class="btn" type="submit">Uitloggen</button>
@@ -105,20 +122,28 @@
         </div>
     @endauth
 
+    <div class="watchlist-switcher">
+        @foreach ($watchlists as $watchlist)
+            <a class="btn {{ $selectedWatchlist->id === $watchlist->id ? 'primary' : '' }}"
+                href="{{ route('watchlist.index', array_merge(request()->except('watchlist_id'), ['watchlist_id' => $watchlist->id])) }}">
+                {{ $watchlist->name }}
+            </a>
+        @endforeach
+        <a class="btn primary" href="{{ route('watchlist.create', ['watchlist_id' => $selectedWatchlist->id]) }}">Toevoegen</a>
+    </div>
+
     <form action="" class="topbar">
+        <input type="hidden" name="watchlist_id" value="{{ $selectedWatchlist->id }}">
         <input type="text" name="search" placeholder="Zoeken...">
         <button class="btn" type="submit">Zoek</button>
     </form>
 
     <div class="topbar">
-        @auth
-            <a class="btn primary" href="{{ route('watchlist.create') }}">Toevoegen</a>
-        @endauth
-        <a class="btn" href="{{ route('watchlist.index') }}">Alles</a>
-        <a class="btn" href="{{ route('watchlist.index', ['type' => 'film']) }}">Films</a>
-        <a class="btn" href="{{ route('watchlist.index', ['type' => 'serie']) }}">Series</a>
-        <a class="btn" href="{{ route('watchlist.index', ['status' => 'bekeken']) }}">Bekeken</a>
-        <a class="btn" href="{{ route('watchlist.index', ['status' => 'niet_bekeken']) }}">Nog te kijken</a>
+        <a class="btn" href="{{ route('watchlist.index', ['watchlist_id' => $selectedWatchlist->id]) }}">Alles</a>
+        <a class="btn" href="{{ route('watchlist.index', array_merge(request()->except(['type', 'watchlist_id']), ['watchlist_id' => $selectedWatchlist->id, 'type' => 'film'])) }}">Films</a>
+        <a class="btn" href="{{ route('watchlist.index', array_merge(request()->except(['type', 'watchlist_id']), ['watchlist_id' => $selectedWatchlist->id, 'type' => 'serie'])) }}">Series</a>
+        <a class="btn" href="{{ route('watchlist.index', array_merge(request()->except(['status', 'watchlist_id']), ['watchlist_id' => $selectedWatchlist->id, 'status' => 'bekeken'])) }}">Bekeken</a>
+        <a class="btn" href="{{ route('watchlist.index', array_merge(request()->except(['status', 'watchlist_id']), ['watchlist_id' => $selectedWatchlist->id, 'status' => 'niet_bekeken'])) }}">Nog te kijken</a>
     </div>
 
     <table>

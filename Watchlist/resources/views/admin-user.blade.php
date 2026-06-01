@@ -168,7 +168,7 @@
                     <div class="value">{{ $user->email }}</div>
                 </div>
                 <div class="info">
-                    <div class="label">Rollen</div>
+                    <div class="label">Rol</div>
                     <div class="value">
                         @forelse ($user->getRoleNames() as $role)
                             <span class="role">{{ $role }}</span>
@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <div class="info">
-                    <div class="label">Watchlist items</div>
+                    <div class="label">Watchlisten</div>
                     <div class="value">{{ $user->watchlist_items_count }}</div>
                 </div>
                 <div class="info">

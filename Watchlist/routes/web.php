@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\WatchlistItemController;
 use App\Http\Controllers\GebruikersgegevensController;
+use App\Http\Controllers\WatchlistController;
+use App\Http\Controllers\WatchlistItemController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,7 @@ Route::post('/register', [GebruikersgegevensController::class, 'register'])->nam
 Route::post('/logout', [GebruikersgegevensController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/watchlists', [WatchlistController::class, 'store'])->name('watchlists.store');
     Route::get('/watchlist', [WatchlistItemController::class, 'index'])->name('watchlist.index');
     Route::get('/watchlist/{watchlistItem}/edit', [WatchlistItemController::class, 'edit'])->name('watchlist.edit');
     Route::put('/watchlist/{watchlistItem}', [WatchlistItemController::class, 'update'])->name('watchlist.update');

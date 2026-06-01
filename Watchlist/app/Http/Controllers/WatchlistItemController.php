@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Watchlist;
 use App\Models\WatchlistItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class WatchlistItemController extends Controller
 {
@@ -16,11 +19,15 @@ class WatchlistItemController extends Controller
      */
     public function index(Request $request)
     {
-        // Toon alleen items van de ingelogde gebruiker.
-        $query = WatchlistItem::where('user_id', Auth::id());
+        $watchlists = $this->ensureWatchlists();
+        $selectedWatchlist = $this->selectedWatchlist($request, $watchlists);
+
+        // Toon alleen items van de ingelogde gebruiker in de gekozen lijst.
+        $query = WatchlistItem::where('user_id', Auth::id())
+            ->where('watchlist_id', $selectedWatchlist->id);
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%'.$request->search.'%');
         }
         // Eenvoudige filters op status en type.
         if ($request->filled('status') && in_array($request->status, ['niet_bekeken', 'bekeken'], true)) {
@@ -33,7 +40,11 @@ class WatchlistItemController extends Controller
 
         $items = $query->orderBy('updated_at', 'desc')->get();
 
-        return view('watchlist', compact('items'));
+        return view('watchlist', [
+            'items' => $items,
+            'watchlists' => $watchlists,
+            'selectedWatchlist' => $selectedWatchlist,
+        ]);
     }
 
     /**
@@ -41,13 +52,17 @@ class WatchlistItemController extends Controller
      */
     public function create(Request $request)
     {
+        $watchlists = $this->ensureWatchlists();
+        $selectedWatchlist = $this->selectedWatchlist($request, $watchlists);
         $searchQuery = trim((string) $request->query('query', ''));
         $searchResults = [];
         $searchError = null;
         $watchlistItems = WatchlistItem::where('user_id', Auth::id())
+            ->where('watchlist_id', $selectedWatchlist->id)
             ->orderBy('updated_at', 'desc')
             ->get();
         $existingItems = WatchlistItem::where('user_id', Auth::id())
+            ->where('watchlist_id', $selectedWatchlist->id)
             ->whereNotNull('tmdb_id')
             ->get()
             ->keyBy('tmdb_id');
@@ -74,6 +89,8 @@ class WatchlistItemController extends Controller
             'searchError' => $searchError,
             'watchlistItems' => $watchlistItems,
             'existingItems' => $existingItems,
+            'watchlists' => $watchlists,
+            'selectedWatchlist' => $selectedWatchlist,
         ]);
     }
 
@@ -91,7 +108,14 @@ class WatchlistItemController extends Controller
             'image_path' => 'nullable|string|max:2048',
             'tmdb_id' => 'nullable|integer|min:1',
             'tmdb_type' => 'nullable|in:film,serie',
+            'watchlist_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('watchlists', 'id')->where(fn ($query) => $query->where('user_id', Auth::id())),
+            ],
         ]);
+
+        $watchlist = $this->resolveWatchlistForStore($validated['watchlist_id'] ?? null);
 
         // Upload afbeelding (optioneel) en bewaar de publieke URL.
         $imageUrl = null;
@@ -118,6 +142,7 @@ class WatchlistItemController extends Controller
 
         WatchlistItem::create([
             'user_id' => Auth::id(),
+            'watchlist_id' => $watchlist->id,
             'title' => $tmdbData['title'] ?? $validated['title'],
             'type' => $tmdbData['type'] ?? $validated['type'],
             'status' => 'niet_bekeken',
@@ -206,7 +231,7 @@ class WatchlistItemController extends Controller
             return [];
         }
 
-        $response = $this->tmdbRequest()->get($this->tmdbBaseUrl() . '/search/multi', [
+        $response = $this->tmdbRequest()->get($this->tmdbBaseUrl().'/search/multi', [
             'api_key' => $apiKey,
             'query' => $query,
             'include_adult' => false,
@@ -231,9 +256,9 @@ class WatchlistItemController extends Controller
             return [];
         }
 
-        $endpoint = $tmdbType === 'serie' ? '/tv/' . $tmdbId : '/movie/' . $tmdbId;
+        $endpoint = $tmdbType === 'serie' ? '/tv/'.$tmdbId : '/movie/'.$tmdbId;
 
-        $response = $this->tmdbRequest()->get($this->tmdbBaseUrl() . $endpoint, [
+        $response = $this->tmdbRequest()->get($this->tmdbBaseUrl().$endpoint, [
             'api_key' => $apiKey,
             'language' => 'nl-NL',
         ])->throw();
@@ -305,7 +330,7 @@ class WatchlistItemController extends Controller
             return null;
         }
 
-        return rtrim(config('services.tmdb.image_base_url', 'https://image.tmdb.org/t/p/w342'), '/') . $posterPath;
+        return rtrim(config('services.tmdb.image_base_url', 'https://image.tmdb.org/t/p/w342'), '/').$posterPath;
     }
 
     /**
@@ -325,5 +350,62 @@ class WatchlistItemController extends Controller
             ->timeout(15)
             ->acceptJson()
             ->withoutVerifying();
+    }
+
+    private function ensureWatchlists(): Collection
+    {
+        $watchlists = $this->watchlistsForUser();
+
+        if ($watchlists->isEmpty()) {
+            $this->defaultWatchlist();
+            $watchlists = $this->watchlistsForUser();
+        }
+
+        return $watchlists;
+    }
+
+    private function watchlistsForUser(): Collection
+    {
+        return Watchlist::where('user_id', Auth::id())
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
+    private function selectedWatchlist(Request $request, Collection $watchlists): Watchlist
+    {
+        $watchlistId = $request->input('watchlist_id');
+
+        if ($watchlistId !== null) {
+            $selectedWatchlist = $watchlists->firstWhere('id', (int) $watchlistId);
+
+            if ($selectedWatchlist !== null) {
+                return $selectedWatchlist;
+            }
+        }
+
+        return $watchlists->first() ?? $this->defaultWatchlist();
+    }
+
+    private function resolveWatchlistForStore(mixed $watchlistId): Watchlist
+    {
+        if ($watchlistId !== null) {
+            $watchlist = Watchlist::where('user_id', Auth::id())
+                ->whereKey((int) $watchlistId)
+                ->first();
+
+            if ($watchlist !== null) {
+                return $watchlist;
+            }
+        }
+
+        return $this->defaultWatchlist();
+    }
+
+    private function defaultWatchlist(): Watchlist
+    {
+        return Watchlist::firstOrCreate([
+            'user_id' => Auth::id(),
+            'name' => 'Mijn watchlist',
+        ]);
     }
 }
