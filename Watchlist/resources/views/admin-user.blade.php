@@ -181,10 +181,7 @@
                     <div class="label">Watchlisten</div>
                     <div class="value">{{ $user->watchlist_items_count }}</div>
                 </div>
-                <div class="info">
-                    <div class="label">Aangemaakt</div>
-                    <div class="value">{{ $user->created_at?->format('d-m-Y H:i') ?? 'Onbekend' }}</div>
-                </div>
+
             </div>
         </section>
 
@@ -204,7 +201,6 @@
                             <th>Status</th>
                             <th>Jaar</th>
                             <th>Rating</th>
-                            <th>Bijgewerkt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -212,13 +208,11 @@
                             <tr>
                                 <td>
                                     <strong>{{ $item->title }}</strong><br>
-                                    <span class="subtle">TMDb: {{ $item->tmdb_type ?? 'n.v.t.' }} {{ $item->tmdb_id ? '#'.$item->tmdb_id : '' }}</span>
                                 </td>
                                 <td>{{ ucfirst($item->type) }}</td>
                                 <td>{{ ucfirst(str_replace('_', ' ', $item->status)) }}</td>
                                 <td>{{ $item->year }}</td>
                                 <td>{{ $item->rating ? $item->rating . '/5' : 'N/A' }}</td>
-                                <td>{{ $item->updated_at?->format('d-m-Y H:i') ?? 'Onbekend' }}</td>
                             </tr>
                         @endforeach
                     </tbody>

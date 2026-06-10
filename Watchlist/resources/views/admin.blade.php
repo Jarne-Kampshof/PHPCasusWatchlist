@@ -5,149 +5,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin overzicht</title>
     <style>
-        :root {
-            --bg: #f5f7fb;
-            --panel: #fff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --border: #d1d5db;
-            --accent: #e5f0ff;
-            --accent-border: #93c5fd;
-        }
+:root {
+    --bg: #000;
+    --panel: #0b0b0b;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #1f1f1f;
+    --accent: #ffd400;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-        }
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: radial-gradient(circle at top, #0a0a0a, #000);
+    color: var(--text);
+    margin: 0;
+}
 
-        .page {
-            max-width: 1180px;
-            margin: 24px auto;
-            padding: 0 16px 24px;
-        }
+.page {
+    max-width: 1180px;
+    margin: 24px auto;
+    padding: 0 16px 24px;
+}
 
-        .hero,
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-        }
+.hero,
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(255, 212, 0, 0.04);
+}
 
-        .hero {
-            padding: 24px;
-            margin-bottom: 18px;
-        }
+.hero {
+    padding: 24px;
+    margin-bottom: 18px;
+}
 
-        .hero-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+.hero h1 {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+}
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
 
-        .btn {
-            display: inline-block;
-            border: 1px solid #9ca3af;
-            background: #f9fafb;
-            padding: 10px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #111827;
-            font-weight: 600;
-        }
+.btn {
+    display: inline-block;
+    border: 1px solid var(--border);
+    background: #111;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    transition: 0.2s;
+}
 
-        .btn.primary {
-            background: var(--accent);
-            border-color: var(--accent-border);
-        }
+.btn:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+    transform: translateY(-1px);
+}
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 18px;
-        }
+.btn.primary {
+    background: var(--accent);
+    color: #000;
+    border: 1px solid var(--accent);
+}
 
-        .stat {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 14px;
-            background: #fff;
-        }
+.actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 
-        .label {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-        }
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+}
 
-        .value {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
+.stat {
+    background: #0f0f0f;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+}
 
-        .card {
-            overflow: hidden;
-        }
+.label {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
 
-        .card-header {
-            padding: 18px 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
+.value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.card {
+    overflow: hidden;
+}
 
-        th,
-        td {
-            border-bottom: 1px solid #e5e7eb;
-            padding: 12px 14px;
-            text-align: left;
-            vertical-align: top;
-        }
+.card-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+}
 
-        th {
-            background: #f9fafb;
-            font-size: 0.92rem;
-        }
+.card-header h2 {
+    margin: 0;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
-        .subtle {
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        .role {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            font-size: 0.85rem;
-            margin-right: 6px;
-        }
+th {
+    background: #111;
+    color: var(--accent);
+    text-align: left;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        .empty {
-            padding: 20px;
-            color: var(--muted);
-        }
+th, td {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 14px;
+    vertical-align: top;
+}
 
-        .link {
-            color: #1d4ed8;
-            text-decoration: none;
-            font-weight: 600;
-        }
+tr:hover {
+    background: #151515;
+}
+
+.subtle {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.role {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #111;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-right: 6px;
+}
+
+.empty {
+    padding: 20px;
+    color: var(--muted);
+}
+
+.link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
     </style>
 </head>
 <body>

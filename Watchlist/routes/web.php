@@ -31,9 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/watchlist/{watchlistItem}', [WatchlistItemController::class, 'destroy'])->name('watchlist.destroy');
 
     Route::resource('gebruikersgegevens', GebruikersgegevensController::class)->except(['create', 'store']);
-});
-
-Route::middleware('auth')->group(function () {
     Route::get('/watchlist/create', [WatchlistItemController::class, 'create'])->name('watchlist.create');
     Route::post('/watchlist', [WatchlistItemController::class, 'store'])->name('watchlist.store');
 });

@@ -1,103 +1,132 @@
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f7fb;
-        color: #1f2937;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: radial-gradient(circle at top, #0a0a0a, #000);
+    color: #e5e7eb;
+}
 
-    .page {
-        max-width: 1100px;
-        margin: 24px auto;
-        background: #fff;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        padding: 16px;
-    }
+.page {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 20px;
+}
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-    .topbar {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-    }
+.header h1 {
+    color: #ffd400;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0;
+    text-shadow: 0 0 12px rgba(255, 212, 0, 0.25);
+}
 
-    .watchlist-switcher {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-        margin: 14px 0 16px;
-    }
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    .watchlist-name {
-        color: #6b7280;
-        font-size: 0.95rem;
-        margin: 4px 0 0;
-    }
+    border: 1px solid #1f1f1f;
+    background: linear-gradient(145deg, #111, #0b0b0b);
+    color: #e5e7eb;
 
-    .btn {
-        border: 1px solid #9ca3af;
-        background: #f9fafb;
-        padding: 6px 10px;
-        border-radius: 6px;
-        text-decoration: none;
-        color: #111827;
-    }
+    padding: 8px 12px;
+    border-radius: 8px;
 
-    .btn.primary {
-        background: #e5f0ff;
-        border-color: #93c5fd;
-    }
+    text-decoration: none;
+    cursor: pointer;
 
-    .admin-callout {
-        margin: 0 0 14px;
-        padding: 14px 16px;
-        border: 1px solid #bfdbfe;
-        border-radius: 10px;
-        background: #eff6ff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    line-height: 1;
+    white-space: nowrap;
+}
 
-    .admin-callout strong {
-        display: block;
-        margin-bottom: 4px;
-    }
+.btn:hover {
+    border-color: #ffd400;
+    box-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+    transform: translateY(-1px);
+}
 
-    input[type="text"] {
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        padding: 6px 8px;
-    }
+.btn.primary {
+    background: #ffd400;
+    color: #000;
+    font-weight: 700;
+    border: 1px solid #ffd400;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+.btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
 
-    th,
-    td {
-        border: 1px solid #e5e7eb;
-        padding: 8px;
-        text-align: left;
-        vertical-align: middle;
-    }
+.admin-callout {
+    background: #0b0b0b;
+    border: 1px solid #1f1f1f;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
 
-    th {
-        background: #f3f4f6;
-    }
+.watchlist-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.topbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+input[type="text"] {
+    flex: 1;
+    background: #0f0f0f !important;
+    border: 1px solid #1f1f1f !important;
+    color: #e5e7eb !important;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #111;
+    color: #ffd400;
+    text-align: left;
+}
+
+th, td {
+    border: 1px solid #1f1f1f;
+    padding: 8px;
+    vertical-align: middle;
+}
+
+tr:hover {
+    background: #151515;
+}
+
+td img {
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+td img:hover {
+    transform: scale(1.05);
+}
 </style>
 
 <div class="page">
@@ -111,16 +140,6 @@
             <button class="btn" type="submit">Uitloggen</button>
         </form>
     </div>
-
-    @auth
-        <div class="admin-callout">
-            <div>
-                <strong>Toevoegen aan je watchlist</strong>
-                <span>Ga direct naar de toevoegpagina om een film of serie toe te voegen.</span>
-            </div>
-            <a class="btn primary" href="{{ route('watchlist.create') }}">Naar toevoegpagina</a>
-        </div>
-    @endauth
 
     <div class="watchlist-switcher">
         @foreach ($watchlists as $watchlist)

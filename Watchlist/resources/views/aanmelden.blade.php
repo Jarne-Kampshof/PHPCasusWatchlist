@@ -1,41 +1,85 @@
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f7fb;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: radial-gradient(circle at top, #0a0a0a, #000);
+    color: #e5e7eb;
+}
 
-    .card {
-        max-width: 620px;
-        margin: 24px auto;
-        background: #fff;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        padding: 16px;
-    }
+.card {
+    max-width: 620px;
+    margin: 50px auto;
+    background: #0b0b0b;
+    border: 1px solid #1f1f1f;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 25px rgba(255, 212, 0, 0.05);
+}
 
-    .field {
-        margin-bottom: 12px;
-    }
+.card h1 {
+    color: #ffd400;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+}
 
-    label {
-        display: block;
-        margin-bottom: 4px;
-        font-weight: 600;
-    }
+.field {
+    margin-bottom: 14px;
+}
 
-    input,
-    button {
-        width: 100%;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        padding: 8px;
-    }
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #cfcfcf;
+}
 
-    button {
-        background: #e5f0ff;
-        border-color: #93c5fd;
-        cursor: pointer;
-    }
+input {
+    width: 100%;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 10px;
+    background: #0f0f0f;
+    color: #e5e7eb;
+}
+
+input:focus {
+    outline: none;
+    border-color: #ffd400;
+    box-shadow: 0 0 8px rgba(255, 212, 0, 0.25);
+}
+
+button {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    background: #ffd400;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    box-shadow: 0 0 12px rgba(255, 212, 0, 0.35);
+    transform: translateY(-1px);
+}
+
+.card > div {
+    border: 1px solid #3a1a1a !important;
+    background: #1a0a0a !important;
+    color: #ff6b6b !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+}
+
+.card ul {
+    margin: 0;
+    padding-left: 18px;
+}
 </style>
 
 <div class="card">

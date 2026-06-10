@@ -1,180 +1,207 @@
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f7fb;
-        color: #1f2937;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #000;
+    color: #e5e7eb;
+}
 
-    .card {
-        max-width: 980px;
-        margin: 24px auto;
-        background: #fff;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        padding: 16px;
-    }
+.card {
+    max-width: 980px;
+    margin: 24px auto;
+    background: #0b0b0b;
+    border: 1px solid #1f1f1f;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 0 25px rgba(255, 212, 0, 0.05);
+}
 
-    .field {
-        margin-bottom: 12px;
-    }
+h1, h2 {
+    color: #ffd400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-    label {
-        display: block;
-        margin-bottom: 4px;
-        font-weight: 600;
-    }
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #cfcfcf;
+}
 
-    input,
-    select,
-    button {
-        width: 100%;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        padding: 8px;
-    }
+input,
+select,
+button {
+    width: 100%;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 10px;
+    background: #0f0f0f;
+    color: #e5e7eb;
+}
 
-    button {
-        background: #e5f0ff;
-        border-color: #93c5fd;
-        cursor: pointer;
-    }
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #ffd400;
+    box-shadow: 0 0 8px rgba(255,212,0,0.3);
+}
 
-    .search-bar {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        margin-bottom: 16px;
-    }
+button {
+    cursor: pointer;
+    background: #111;
+    transition: 0.2s;
+}
 
-    .notice {
-        border-radius: 8px;
-        padding: 10px 12px;
-        margin-bottom: 16px;
-    }
+button:hover {
+    border-color: #ffd400;
+    box-shadow: 0 0 10px rgba(255,212,0,0.3);
+}
 
-    .notice.error {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #991b1b;
-    }
+button[type="submit"] {
+    background: #ffd400;
+    color: #000;
+    font-weight: 700;
+    border: none;
+}
 
-    .notice.info {
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
-        color: #1d4ed8;
-    }
+button[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
 
-    .results {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 12px;
-        margin: 16px 0 24px;
-    }
+.search-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    margin: 16px 0;
+}
 
-    .result {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-    }
+.notice {
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #1f1f1f;
+}
 
-    .result img {
-        width: 100%;
-        aspect-ratio: 2 / 3;
-        object-fit: cover;
-        background: #e5e7eb;
-    }
+.notice.error {
+    background: #1a0a0a;
+    color: #ff6b6b;
+    border-color: #3a1a1a;
+}
 
-    .result-body {
-        padding: 12px;
-        display: grid;
-        gap: 8px;
-    }
+.notice.info {
+    background: #0f0f0f;
+    color: #ffd400;
+}
 
-    .result-title {
-        font-weight: 700;
-        line-height: 1.3;
-    }
+.watchlist-tools {
+    display: grid;
+    gap: 14px;
+    margin: 14px 0 18px;
+    padding: 14px;
+    border: 1px solid #1f1f1f;
+    border-radius: 10px;
+    background: #0a0a0a;
+}
 
-    .meta {
-        color: #6b7280;
-        font-size: 0.95rem;
-    }
+.inline {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: end;
+}
 
-    .result form {
-        margin-top: auto;
-    }
+.results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+}
 
-    .manual-section {
-        margin-top: 28px;
-        padding-top: 20px;
-        border-top: 1px solid #e5e7eb;
-    }
+.result {
+    background: #0d0d0d;
+    border: 1px solid #1f1f1f;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.2s;
+}
 
-    .watchlist-tools {
-        display: grid;
-        gap: 12px;
-        margin: 14px 0 18px;
-        padding: 14px;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        background: #f9fafb;
-    }
+.result:hover {
+    transform: translateY(-5px);
+    border-color: #ffd400;
+    box-shadow: 0 0 15px rgba(255,212,0,0.2);
+}
 
-    .watchlist-tools form {
-        display: grid;
-        gap: 10px;
-    }
+.result img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    background: #111;
+}
 
-    .watchlist-tools .inline {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: end;
-    }
+.result-body {
+    padding: 12px;
+    display: grid;
+    gap: 8px;
+}
 
-    .secondary-button {
-        background: #eef2ff;
-        border-color: #c7d2fe;
-    }
+.result-title {
+    font-weight: 700;
+}
+
+.meta {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+.manual-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #1f1f1f;
+}
 </style>
 
 <div class="card">
-    <h1>Film of serie toevoegen</h1>
-    <p class="meta">Toevoegen aan lijst: <strong>{{ $selectedWatchlist->name }}</strong></p>
+
+    <h1>🎬 Film of serie toevoegen</h1>
+    <p class="meta">
+        Toevoegen aan lijst: <strong style="color:#ffd400;">
+            {{ $selectedWatchlist->name }}
+        </strong>
+    </p>
 
     <div class="watchlist-tools">
+
         <form method="GET" action="{{ route('watchlist.create') }}" class="inline">
-            <div class="field" style="margin-bottom: 0;">
-                <label for="watchlist_id">Kies lijst</label>
-                <select id="watchlist_id" name="watchlist_id">
+            <div>
+                <label>Kies lijst</label>
+                <select name="watchlist_id">
                     @foreach ($watchlists as $watchlist)
-                        <option value="{{ $watchlist->id }}" @selected($selectedWatchlist->id === $watchlist->id)>
+                        <option value="{{ $watchlist->id }}"
+                            @selected($selectedWatchlist->id === $watchlist->id)>
                             {{ $watchlist->name }}
                         </option>
                     @endforeach
                 </select>
-                <input type="hidden" name="query" value="{{ $query }}">
             </div>
-            <button type="submit" class="secondary-button">Lijst wisselen</button>
+            <button type="submit">Wissel</button>
         </form>
 
         <form method="POST" action="{{ route('watchlists.store') }}" class="inline">
             @csrf
-            <div class="field" style="margin-bottom: 0;">
-                <label for="name">Nieuwe lijst maken</label>
-                <input type="text" id="name" name="name" placeholder="Bijvoorbeeld: Films, Series of Favorieten" required>
-                <input type="hidden" name="query" value="{{ $query }}">
+            <div>
+                <label>Nieuwe lijst</label>
+                <input type="text" name="name" placeholder="Bijv. Films, Series..." required>
             </div>
-            <button type="submit">Maak lijst</button>
+            <button type="submit">Maak</button>
         </form>
+
     </div>
 
     <form method="GET" action="{{ route('watchlist.create') }}" class="search-bar">
         <input type="hidden" name="watchlist_id" value="{{ $selectedWatchlist->id }}">
-        <input type="text" name="query" value="{{ $query }}" placeholder="Zoek op film- of serienaam">
+        <input type="text" name="query" value="{{ $query }}" placeholder="Zoek films of series...">
         <button type="submit">Zoeken</button>
     </form>
 
@@ -184,69 +211,47 @@
 
     @if ($query !== '' && !$searchError)
         <div class="notice info">
-            Resultaten voor "{{ $query }}". Kies een item om het direct aan je watchlist toe te voegen.
+            Resultaten voor "<strong>{{ $query }}</strong>"
         </div>
     @endif
 
     @if (!empty($searchResults))
         <div class="results">
             @foreach ($searchResults as $result)
-                <article class="result">
+                <div class="result">
+
                     @if ($result['image_path'])
                         <img src="{{ $result['image_path'] }}" alt="{{ $result['title'] }}">
                     @endif
+
                     <div class="result-body">
                         <div class="result-title">{{ $result['title'] }}</div>
-                        <div class="meta">{{ ucfirst($result['tmdb_type'] ?? 'onbekend') }} · {{ $result['year'] }}</div>
+                        <div class="meta">
+                            {{ ucfirst($result['tmdb_type'] ?? 'onbekend') }} · {{ $result['year'] }}
+                        </div>
 
                         <form method="POST" action="{{ route('watchlist.store') }}">
                             @csrf
+
                             <input type="hidden" name="title" value="{{ $result['title'] }}">
                             <input type="hidden" name="type" value="{{ $result['tmdb_type'] }}">
                             <input type="hidden" name="year" value="{{ $result['year'] }}">
                             <input type="hidden" name="tmdb_id" value="{{ $result['tmdb_id'] }}">
                             <input type="hidden" name="tmdb_type" value="{{ $result['tmdb_type'] }}">
                             <input type="hidden" name="image_path" value="{{ $result['image_path'] }}">
-
                             <input type="hidden" name="watchlist_id" value="{{ $selectedWatchlist->id }}">
 
                             @if ($result['tmdb_id'] && $existingItems->has($result['tmdb_id']))
-                                <button type="button" disabled>Al in deze lijst</button>
+                                <button type="button" disabled>Al toegevoegd</button>
                             @else
                                 <button type="submit">Toevoegen</button>
                             @endif
                         </form>
+
                     </div>
-                </article>
+                </div>
             @endforeach
         </div>
     @endif
 
-    <div class="manual-section">
-        <h2>Handmatig toevoegen</h2>
-        <form method="POST" action="{{ route('watchlist.store') }}" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="watchlist_id" value="{{ $selectedWatchlist->id }}">
-            <div class="field">
-                <label for="title">Titel:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="field">
-                <label for="type">Type:</label>
-                <select id="type" name="type" required>
-                    <option value="film">Film</option>
-                    <option value="serie">Serie</option>
-                </select>
-            </div>
-            <div class="field">
-                <label for="year">Jaar:</label>
-                <input type="number" id="year" name="year" required min="1900" max="{{ date('Y') }}">
-            </div>
-            <div class="field">
-                <label for="image">Afbeelding kiezen:</label>
-                <input type="file" id="image" name="image" accept="image/*">
-            </div>
-            <button type="submit">Toevoegen aan watchlist</button>
-        </form>
-    </div>
 </div>
