@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gebruiker detail</title>
     <style>
         :root {
-            --bg: #f5f7fb;
-            --panel: #fff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --border: #d1d5db;
-            --accent: #e5f0ff;
-            --accent-border: #93c5fd;
+            --bg: #000;
+            --panel: #0b0b0b;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --border: #1f1f1f;
+            --accent: #ffd400;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: var(--bg);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: radial-gradient(circle at top, #0a0a0a, #000);
             color: var(--text);
             margin: 0;
         }
@@ -33,7 +33,7 @@
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0 25px rgba(255, 212, 0, 0.04);
         }
 
         .panel {
@@ -49,6 +49,14 @@
             align-items: center;
         }
 
+        .topbar h1 {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+        }
+
         .actions {
             display: flex;
             gap: 12px;
@@ -57,18 +65,26 @@
 
         .btn {
             display: inline-block;
-            border: 1px solid #9ca3af;
-            background: #f9fafb;
+            border: 1px solid var(--border);
+            background: #111;
             padding: 10px 14px;
             border-radius: 8px;
             text-decoration: none;
-            color: #111827;
+            color: var(--text);
             font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(255, 212, 0, 0.25);
+            transform: translateY(-1px);
         }
 
         .btn.primary {
             background: var(--accent);
-            border-color: var(--accent-border);
+            color: #000;
+            border: 1px solid var(--accent);
         }
 
         .grid {
@@ -79,10 +95,10 @@
         }
 
         .info {
-            border: 1px solid #e5e7eb;
+            background: #0f0f0f;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 14px;
-            background: #fff;
         }
 
         .label {
@@ -93,6 +109,7 @@
 
         .value {
             font-weight: 700;
+            color: var(--accent);
         }
 
         .card {
@@ -102,7 +119,14 @@
 
         .card-header {
             padding: 18px 20px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         table {
@@ -112,15 +136,22 @@
 
         th,
         td {
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border);
             padding: 12px 14px;
             text-align: left;
             vertical-align: top;
         }
 
         th {
-            background: #f9fafb;
-            font-size: 0.92rem;
+            background: #111;
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background: #151515;
         }
 
         .subtle {
@@ -132,8 +163,9 @@
             display: inline-block;
             padding: 4px 10px;
             border-radius: 999px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
+            background: #111;
+            border: 1px solid var(--accent);
+            color: var(--accent);
             font-size: 0.85rem;
             margin-right: 6px;
         }
@@ -144,6 +176,7 @@
         }
     </style>
 </head>
+
 <body>
     <main class="page">
         <section class="panel">
@@ -221,4 +254,5 @@
         </section>
     </main>
 </body>
+
 </html>
